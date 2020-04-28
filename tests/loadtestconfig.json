@@ -4,7 +4,7 @@
         "WebsocketURL": "ws://web:80",
         "PProfURL": "http://localhost:8067/debug/pprof",
         "DriverName": "postgres",
-        "DataSource": "postgres://postgres:mm_user_pasword@pgpool:5432/mattermost?sslmode=disable&connect_timeout=10",
+        "DataSource": "postgres://postgres:mm_admin_pasword@pgpool:5432/mattermost?sslmode=disable&connect_timeout=10",
         "LocalCommands": true,
         "SSHHostnamePort": "",
         "SSHUsername": "",

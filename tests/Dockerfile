@@ -20,7 +20,7 @@ WORKDIR /app
 
 COPY loadtestconfig.json /app
 
-COPY testfiles /app
+COPY testfiles /app/testfiles
 
 
 CMD ["tail", "-f", "/dev/null"]
