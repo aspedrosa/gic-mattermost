@@ -1,0 +1,192 @@
+
+version: '3.3'
+
+networks:
+  # network for App <-> DB transactions
+  mm-in:
+    driver: overlay
+    internal: true
+  # this network faces the outside world
+  mm-out:
+    driver: overlay
+    internal: false
+
+secrets:
+  pgpool_postgres_password_secret:
+    external: true
+  postgresql_password:
+    external: true
+    
+services:
+  app:
+    # use official mattermost prod-app image
+    image: 10.2.0.1:5000/mattermost-84921-85098-app
+    networks:
+      - mm-in
+      - mm-out
+    ports:
+      - "6399:8000"
+    volumes:
+      # the entire application is served from nfs
+      - /nfs/mattermost/mattermost:/mattermost:rw
+    environment:
+      - MM_SERVICESETTINGS_SITEURL=http://127.0.0.1
+      # use service's hostname
+      - DB_HOST=pgpool
+      # talk to the port within the overlay networks
+      # without (over)exposing ports
+      - DB_PORT_NUMBER=5432
+      - MM_USERNAME=postgres
+      - MM_PASSWORD_FILE=/run/secrets/pgpool_postgres_password_secret
+      - MM_DBNAME=mattermost
+      # pass the edition to be used, default is enterprise
+      # setting this env var will make the app use the team edition
+      - edition=team
+      # in case your config is not in default location
+      # - MM_CONFIG=/mattermost/config/config.json
+    secrets:                    
+     - pgpool_postgres_password_secret
+    deploy:
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+
+
+  web:
+    image: 10.2.0.1:5000/mattermost-84921-85098-web
+    ports:
+      - "6300:80"
+      - "6301:443"
+    networks:
+      - mm-out
+    volumes:
+      - /nfs/mattermost/mattermost/client:/static:rw
+    environment:
+      # use app service's hostname
+      - APP_HOST=app
+      # talk to the port within the overlay network
+      # without (over)exposing ports
+      - APP_PORT_NUMBER=8000
+    deploy:
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+
+
+  pg-0:
+    image: bitnami/postgresql-repmgr:11.7.0
+    networks:
+      - mm-in
+    volumes:
+      - /nfs/mattermost/mattermost-84921-85098-pg-replica-0:/bitnami/postgresql
+    environment:
+      # Postgres administrator to access this node
+      - POSTGRESQL_POSTGRES_PASSWORD_FILE=/run/secrets/pgpool_postgres_password_secret
+       # About the database
+      - POSTGRESQL_USERNAME=mmuser
+      - POSTGRESQL_PASSWORD_FILE=/run/secrets/postgresql_password
+      - POSTGRESQL_DATABASE=mattermost
+      # Infos about replication
+      - REPMGR_PASSWORD_FILE=/run/secrets/postgresql_password
+      - REPMGR_PRIMARY_HOST=pg-0
+      - REPMGR_PARTNER_NODES=pg-0,pg-1,pg-2
+      # Infos about this node
+      - REPMGR_NODE_NAME=pg-0
+      - REPMGR_NODE_NETWORK_NAME=pg-0
+    secrets:                    
+      - pgpool_postgres_password_secret
+      - postgresql_password
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+
+  pg-1:
+    image:  bitnami/postgresql-repmgr:11.7.0
+    networks:
+      - mm-in
+    volumes:
+      - /nfs/mattermost/mattermost-84921-85098-pg-replica-1:/bitnami/postgresql
+    environment:
+      # Postgres administrator to access this node
+      - POSTGRESQL_POSTGRES_PASSWORD_FILE=/run/secrets/pgpool_postgres_password_secret
+      # About the database
+      - POSTGRESQL_USERNAME=mmuser
+      - POSTGRESQL_PASSWORD_FILE=/run/secrets/postgresql_password
+      - POSTGRESQL_DATABASE=mattermost
+      # Infos about replication
+      - REPMGR_PASSWORD_FILE=/run/secrets/postgresql_password
+      - REPMGR_PRIMARY_HOST=pg-0
+      - REPMGR_PARTNER_NODES=pg-0,pg-1,pg-2
+      # Infos about this node
+      - REPMGR_NODE_NAME=pg-1
+      - REPMGR_NODE_NETWORK_NAME=pg-1
+    secrets:                    
+      - pgpool_postgres_password_secret
+      - postgresql_password
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  pg-2:
+    image: bitnami/postgresql-repmgr:11.7.0
+    networks:
+      - mm-in
+    volumes:
+      - /nfs/mattermost/mattermost-84921-85098-pg-replica-2:/bitnami/postgresql
+    environment:
+      # Postgres administrator to access this node
+      - POSTGRESQL_POSTGRES_PASSWORD_FILE=/run/secrets/pgpool_postgres_password_secret
+      # About the database
+      - POSTGRESQL_USERNAME=mmuser
+      - POSTGRESQL_PASSWORD_FILE=/run/secrets/postgresql_password
+      - POSTGRESQL_DATABASE=mattermost
+      # Infos about replication
+      - REPMGR_PASSWORD_FILE=/run/secrets/postgresql_password
+      - REPMGR_PRIMARY_HOST=pg-0
+      - REPMGR_PARTNER_NODES=pg-0,pg-1,pg-2
+      # Infos about this node
+      - REPMGR_NODE_NAME=pg-2
+      - REPMGR_NODE_NETWORK_NAME=pg-2
+    secrets:
+      - pgpool_postgres_password_secret
+      - postgresql_password
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  pgpool:
+    image: bitnami/pgpool:4.1.1
+    networks:
+      - mm-in
+    environment:
+      # Comma separated list of backend nodes in the cluster.
+      - PGPOOL_BACKEND_NODES=0:pg-0:5432,1:pg-1:5432,2:pg-2:5432
+      # Information for perfoming streaming checks.
+      - PGPOOL_SR_CHECK_USER=mmuser
+      - PGPOOL_SR_CHECK_PASSWORD_FILE=/run/secrets/postgresql_password
+      # Whether to enable LDAP authentication.
+      - PGPOOL_ENABLE_LDAP=no
+      # Postgres administrator credentials, this will be use to allow postgres admin authentication through Pgpool.
+      - PGPOOL_POSTGRES_USERNAME=postgres
+      - PGPOOL_POSTGRES_PASSWORD_FILE=/run/secrets/pgpool_postgres_password_secret
+      # Credentials for the pgpool administrator
+      - PGPOOL_ADMIN_USERNAME=admin
+      - PGPOOL_ADMIN_PASSWORD_FILE=/run/secrets/pgpool_postgres_password_secret
+    secrets:
+      - postgresql_password
+      - pgpool_postgres_password_secret
+    healthcheck:
+      test: ["CMD", "/opt/bitnami/scripts/pgpool/healthcheck.sh"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+
+  
