@@ -18,14 +18,14 @@ secrets:
     external: true
     
 services:
-  app:
+  app-0:
     # use official mattermost prod-app image
     image: 10.2.0.1:5000/mattermost-84921-85098-app
     networks:
       - mm-in
       - mm-out
     ports:
-      - "6301:8000"
+      - "6310:8000"
     volumes:
       # the entire application is served from nfs
       - /nfs/mattermost/mattermost:/mattermost:rw
@@ -43,13 +43,64 @@ services:
       - edition=enterprise
       # in case your config is not in default location
       - MM_CONFIG=/mattermost/imported_files/config.json
-    secrets:                    
+    secrets:
      - pgpool_postgres_password_secret
-    deploy:
-      replicas: 3
-      restart_policy:
-        condition: on-failure
 
+  app-1:
+    # use official mattermost prod-app image
+    image: 10.2.0.1:5000/mattermost-84921-85098-app
+    networks:
+      - mm-in
+      - mm-out
+    ports:
+      - "6311:8000"
+    volumes:
+      # the entire application is served from nfs
+      - /nfs/mattermost/mattermost:/mattermost:rw
+    environment:
+      # use service's hostname
+      - DB_HOST=pgpool
+      # talk to the port within the overlay networks
+      # without (over)exposing ports
+      - DB_PORT_NUMBER=5432
+      - MM_USERNAME=postgres
+      - MM_PASSWORD_FILE=/run/secrets/pgpool_postgres_password_secret
+      - MM_DBNAME=mattermost
+      # pass the edition to be used, default is enterprise
+      # setting this env var will make the app use the team edition
+      - edition=enterprise
+      # in case your config is not in default location
+      - MM_CONFIG=/mattermost/imported_files/config.json
+    secrets:
+     - pgpool_postgres_password_secret
+
+  app-2:
+    # use official mattermost prod-app image
+    image: 10.2.0.1:5000/mattermost-84921-85098-app
+    networks:
+      - mm-in
+      - mm-out
+    ports:
+      - "6312:8000"
+    volumes:
+      # the entire application is served from nfs
+      - /nfs/mattermost/mattermost:/mattermost:rw
+    environment:
+      # use service's hostname
+      - DB_HOST=pgpool
+      # talk to the port within the overlay networks
+      # without (over)exposing ports
+      - DB_PORT_NUMBER=5432
+      - MM_USERNAME=postgres
+      - MM_PASSWORD_FILE=/run/secrets/pgpool_postgres_password_secret
+      - MM_DBNAME=mattermost
+      # pass the edition to be used, default is enterprise
+      # setting this env var will make the app use the team edition
+      - edition=enterprise
+      # in case your config is not in default location
+      - MM_CONFIG=/mattermost/imported_files/config.json
+    secrets:
+     - pgpool_postgres_password_secret
 
   web:
     image: 10.2.0.1:5000/mattermost-84921-85098-web
@@ -61,14 +112,12 @@ services:
       - /nfs/mattermost/mattermost/client:/static:rw
     environment:
       # use app service's hostname
-      - APP_HOST=app
+      - APP_HOST=app-0 # TODO update nignx conf to support multiple apps
       # talk to the port within the overlay network
       # without (over)exposing ports
       - APP_PORT_NUMBER=8000
     deploy:
       replicas: 3
-      restart_policy:
-        condition: on-failure
 
   pg-0:
     image: bitnami/postgresql-repmgr:11.7.0
@@ -90,14 +139,9 @@ services:
       # Infos about this node
       - REPMGR_NODE_NAME=pg-0
       - REPMGR_NODE_NETWORK_NAME=pg-0
-    secrets:                    
+    secrets:
       - pgpool_postgres_password_secret
       - postgresql_password
-    deploy:
-      replicas: 1
-      restart_policy:
-        condition: on-failure
-
 
   pg-1:
     image:  bitnami/postgresql-repmgr:11.7.0
@@ -119,13 +163,9 @@ services:
       # Infos about this node
       - REPMGR_NODE_NAME=pg-1
       - REPMGR_NODE_NETWORK_NAME=pg-1
-    secrets:                    
+    secrets:
       - pgpool_postgres_password_secret
       - postgresql_password
-    deploy:
-      replicas: 1
-      restart_policy:
-        condition: on-failure
 
   pg-2:
     image: bitnami/postgresql-repmgr:11.7.0
@@ -150,17 +190,13 @@ services:
     secrets:
       - pgpool_postgres_password_secret
       - postgresql_password
-    deploy:
-      replicas: 1
-      restart_policy:
-        condition: on-failure
 
   pgpool:
     image: bitnami/pgpool:4.1.1
     networks:
       - mm-in
     ports:
-      - "6302:5432"
+      - "6320:5432"
     environment:
       # Comma separated list of backend nodes in the cluster.
       - PGPOOL_BACKEND_NODES=0:pg-0:5432,1:pg-1:5432,2:pg-2:5432
@@ -185,11 +221,9 @@ services:
       retries: 5
     deploy:
       replicas: 3
-      restart_policy:
-        condition: on-failure
 
-  tests:
-    image: 10.2.0.1:5000/mattermost-tests
-    networks:
-      - mm-out
-      - mm-in
+  #tests:
+  #  image: 10.2.0.1:5000/mattermost-tests
+  #  netoworks:
+  #    - mm-in
+  #    - mm-out

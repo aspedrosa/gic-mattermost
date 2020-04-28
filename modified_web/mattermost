@@ -24,6 +24,11 @@ server {
         alias /static/;
     }
 
+    upstream app {
+        server app-0:8000;
+        server app-1:8000;
+        server app-2:8000;
+    }
 
     location ~ /api/v[0-9]+/(users/)?websocket$ {
         proxy_set_header Upgrade $http_upgrade;
@@ -37,7 +42,7 @@ server {
         proxy_buffers 256 16k;
         proxy_buffer_size 16k;
         proxy_read_timeout 600s;
-        proxy_pass http://{%APP_HOST%}:{%APP_PORT%};
+        proxy_pass http://app;
     }
     
 
@@ -54,6 +59,6 @@ server {
         proxy_buffers 256 16k;
         proxy_buffer_size 16k;
         proxy_read_timeout 600s;
-        proxy_pass http://{%APP_HOST%}:{%APP_PORT%};
+        proxy_pass http://app;
     }  
 }
