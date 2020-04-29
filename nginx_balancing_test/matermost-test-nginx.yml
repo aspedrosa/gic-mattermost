@@ -1,0 +1,129 @@
+
+version: '3.3'
+
+networks:
+  # network for App <-> DB transactions
+  mm-in-test:
+    driver: overlay
+    internal: true
+  # this network faces the outside world
+  mm-out-test:
+    driver: overlay
+    internal: false
+
+    
+services:
+  db:
+    # use official mattermost prod-db image
+    image: mattermost/mattermost-prod-db
+    networks:
+      - mm-in-test
+    environment:
+      - POSTGRES_USER=mmuser
+      - POSTGRES_PASSWORD=mmuser_password
+      - POSTGRES_DB=mattermost
+      # uncomment the following to enable backup
+      # - AWS_ACCESS_KEY_ID=XXXX
+      # - AWS_SECRET_ACCESS_KEY=XXXX
+      # - WALE_S3_PREFIX=s3://BUCKET_NAME/PATH
+      # - AWS_REGION=us-east-1
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+  app-0:
+    # use official mattermost prod-app image
+    image: mattermost/mattermost-prod-app:5.13.0
+    networks:
+      - mm-in-test
+      - mm-out-test
+    environment:
+      # use service's hostname
+      - DB_HOST=db
+      # talk to the port within the overlay network
+      # without (over)exposing ports
+      - DB_PORT_NUMBER=5432
+      - MM_USERNAME=mmuser
+      - MM_PASSWORD=mmuser_password
+      - MM_DBNAME=mattermost
+      # pass the edition to be used, default is enterprise
+      # setting this env var will make the app use the team edition
+      - edition=team
+      # in case your config is not in default location
+      # - MM_CONFIG=/mattermost/config/config.json
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+  app-1:
+    # use official mattermost prod-app image
+    image: mattermost/mattermost-prod-app:5.13.0
+    networks:
+      - mm-in-test
+      - mm-out-test
+    environment:
+      # use service's hostname
+      - DB_HOST=db
+      # talk to the port within the overlay network
+      # without (over)exposing ports
+      - DB_PORT_NUMBER=5432
+      - MM_USERNAME=mmuser
+      - MM_PASSWORD=mmuser_password
+      - MM_DBNAME=mattermost
+      # pass the edition to be used, default is enterprise
+      # setting this env var will make the app use the team edition
+      - edition=team
+      # in case your config is not in default location
+      # - MM_CONFIG=/mattermost/config/config.json
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+  app-2:
+    # use official mattermost prod-app image
+    image: mattermost/mattermost-prod-app:5.13.0
+    networks:
+      - mm-in-test
+      - mm-out-test
+    environment:
+      # use service's hostname
+      - DB_HOST=db
+      # talk to the port within the overlay network
+      # without (over)exposing ports
+      - DB_PORT_NUMBER=5432
+      - MM_USERNAME=mmuser
+      - MM_PASSWORD=mmuser_password
+      - MM_DBNAME=mattermost
+      # pass the edition to be used, default is enterprise
+      # setting this env var will make the app use the team edition
+      - edition=team
+      # in case your config is not in default location
+      # - MM_CONFIG=/mattermost/config/config.json
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+  web:
+    image: 10.2.0.1:5000/mattermost-84921-85098-web-test
+    ports:
+      - "6350:80"
+    networks:
+      - mm-out-test
+    volumes:
+      - /nfs/mattermost/mattermost/client:/static:rw
+    environment:
+      # use app service's hostname
+      - APP_HOST_1=app-0
+      - APP_PORT_NUMBER_1=8000
+      - APP_HOST_2=app-1
+      - APP_PORT_NUMBER_2=8000
+      - APP_HOST_3=app-2
+      - APP_PORT_NUMBER_3=8000
+    deploy:
+      replicas: 1
+
+  #tests:
+  #  image: 10.2.0.1:5000/mattermost-tests
+  #  netoworks:
+  #    - mm-in-test
+  #    - mm-out-test
