@@ -18,5 +18,7 @@ ln -s /etc/nginx/sites-available/mattermost$ssl /etc/nginx/conf.d/mattermost.con
 sed -i "s/{%APP_HOST%}/${APP_HOST}/g" /etc/nginx/conf.d/mattermost.conf
 sed -i "s/{%APP_PORT%}/${APP_PORT_NUMBER}/g" /etc/nginx/conf.d/mattermost.conf
 
+nginx-prometheus-exporter -nginx.scrape-uri http://localhost:80/stub_status &
+
 # Run Nginx
 exec nginx -g 'daemon off;'

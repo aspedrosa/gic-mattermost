@@ -12,6 +12,7 @@ map $http_x_forwarded_proto $proxy_x_forwarded_proto {
 server {
     listen 80;
 
+    stub_status on;
 
     # take care of static files (except the plugins)
     location /static/(?!plugins) {        

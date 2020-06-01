@@ -1,0 +1,56 @@
+scrape_configs:
+  - job_name: 'web'
+    dns_sd_configs:
+      - names:
+          - 'tasks.mattermost-stack_web'
+        port: 9113
+    metrics_path: '/metrics'
+
+  #- job_name: 'app-0'
+  #  dns_sd_configs:
+  #    - names:
+  #        - 'tasks.mattermost-stack_app-0'
+  #      port: TODO
+  #  metrics_path: '/TODO'
+
+  #- job_name: 'app-1'
+  #  dns_sd_configs:
+  #    - names:
+  #        - 'tasks.mattermost-stack_app-1'
+  #      port: TODO
+  #  metrics_path: '/TODO'
+
+  #- job_name: 'app-2'
+  #  dns_sd_configs:
+  #    - names:
+  #        - 'tasks.mattermost-stack_app-2'
+  #      port: TODO
+  #  metrics_path: '/TODO'
+
+  #- job_name: 'pg-pool'
+  #  dns_sd_configs:
+  #    - names:
+  #        - 'tasks.mattermost-stack_pg-pool'
+  #      port: TODO
+  #  metrics_path: '/TODO'
+
+  #- job_name: 'pg-0'
+  #  dns_sd_configs:
+  #    - names:
+  #        - 'tasks.mattermost-stack_pg-0'
+  #      port: TODO
+  #  metrics_path: '/TODO'
+
+  #- job_name: 'pg-1'
+  #  dns_sd_configs:
+  #    - names:
+  #        - 'tasks.mattermost-stack_pg-1'
+  #      port: TODO
+  #  metrics_path: '/TODO'
+
+  #- job_name: 'pg-2'
+  #  dns_sd_configs:
+  #    - names:
+  #        - 'tasks.mattermost-stack_pg-2'
+  #      port: TODO
+  #  metrics_path: '/TODO'

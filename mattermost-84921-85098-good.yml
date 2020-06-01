@@ -222,6 +222,11 @@ services:
     deploy:
       replicas: 3
 
+  prometheus:
+    image: prom/prometheus:v2.18.1
+    ports:
+      - "6330:9090"
+
   #tests:
   #  image: 10.2.0.1:5000/mattermost-tests
   #  netoworks:

@@ -16,8 +16,11 @@ services:
     environment:
       - discovery.type=single-node
     volumes:
-      - ./elasticsearch-data:/usr/share/elasticsearch/data  # chown 1000:1000 ./elasticsearch-data # https://discuss.elastic.co/t/elastic-elasticsearch-docker-not-assigning-permissions-to-data-directory-on-run/65812/2
-    #  - ./elasticsearch.yml:/config/elasticsearch.yml
+      - elasticsearch-data:/usr/share/elasticsearch/data
+      # for a bind volume
+      # chown 1000:1000 ./elasticsearch-data
+      # https://discuss.elastic.co/t/elastic-elasticsearch-docker-not-assigning-permissions-to-data-directory-on-run/65812/2
+      #- ./elasticsearch.yml:/config/elasticsearch.yml
 
   logstash:
     image: logstash:7.7.0
@@ -26,5 +29,8 @@ services:
       - "9600:9600"
     depends_on:
       - elasticsearch
-    #volumes:
-    #  - ./logstash.yml:/config/logstash.yml
+    volumes:
+      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+
+volumes:
+  elasticsearch-data:
