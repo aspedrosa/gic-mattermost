@@ -16,6 +16,10 @@ secrets:
     external: true
   postgresql_password:
     external: true
+
+configs:
+  mattermost_prometheus:
+    external: true
     
 services:
   app-0:
@@ -103,7 +107,7 @@ services:
      - pgpool_postgres_password_secret
 
   web:
-    image: 10.2.0.1:5000/mattermost-84921-85098-web
+    image: 10.2.0.1:5000/mattermost-84921-85098-web-balanced
     ports:
       - "6300:80"
     networks:
@@ -112,10 +116,14 @@ services:
       - /nfs/mattermost/mattermost/client:/static:rw
     environment:
       # use app service's hostname
-      - APP_HOST=app-0 # TODO update nignx conf to support multiple apps
+      APP_HOST_1: app-0
+      APP_HOST_2: app-1
+      APP_HOST_3: app-2
       # talk to the port within the overlay network
       # without (over)exposing ports
-      - APP_PORT_NUMBER=8000
+      APP_PORT_NUMBER_1: 8000
+      APP_PORT_NUMBER_2: 8000
+      APP_PORT_NUMBER_3: 8000
     deploy:
       replicas: 3
 
@@ -226,9 +234,10 @@ services:
     image: prom/prometheus:v2.18.1
     ports:
       - "6330:9090"
-
-  #tests:
-  #  image: 10.2.0.1:5000/mattermost-tests
-  #  netoworks:
-  #    - mm-in
-  #    - mm-out
+    networks:
+      - mm-in
+      - mm-out
+    configs:
+     -
+      source: mattermost_prometheus
+      target: /etc/prometheus/prometheus.yml
