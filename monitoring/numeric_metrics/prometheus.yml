@@ -22,12 +22,8 @@ scrape_configs:
     params:
       'match[]':
         - '{job="web"}'
-        - '{job="app-0"}'
-        - '{job="app-1"}'
-        - '{job="app-2"}'
+        - '{job="app"}'
         - '{job="pg-poll"}'
-        - '{job="pg-0"}'
-        - '{job="pg-1"}'
-        - '{job="pg-2"}'
+        - '{job="pg"}'
     static_configs:
-      - targets: ["srv2-deti.ua.pt:6330"]
+      - targets: ["10.2.0.1:6330"]

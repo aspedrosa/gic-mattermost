@@ -9,26 +9,29 @@ services:
       - prometheus-data:/prometheus
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
 
-  alertmanager:
-    image: prom/alertmanager:v0.20.0
-    #volumes:
-    #  - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml
+  #alertmanager:
+  #  image: prom/alertmanager:v0.20.0
+  #  #volumes:
+  #  #  - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml
 
-  unsee:
-    image: cloudflare/unsee:v0.9.2
-    environment:
-      - ALERTMANAGER_URIS=default:http://alertmanager:9093
-    ports:
-      - 8080:8080
-    depends_on:
-      - alertmanager
+  #unsee:
+  #  image: cloudflare/unsee:v0.9.2
+  #  environment:
+  #    - ALERTMANAGER_URIS=default:http://alertmanager:9093
+  #  ports:
+  #    - 8080:8080
+  #  depends_on:
+  #    - alertmanager
 
   grafana:
     image: grafana/grafana:7.0.1
+    environment:
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
     ports:
       - 3000:3000
     volumes:
-      - ./defaults.ini:/usr/share/grafana/conf/defaults.ini
+      - ./grafana-configs/grafana.ini:/etc/grafana/grafana.ini
+      - ./grafana-configs/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
       - grafana-data:/var/lib/grafana
     depends_on:
       - postgres
@@ -39,7 +42,7 @@ services:
       - postgres-data:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=grafana
-      - POSTGRES_USER=root
+      - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=naoseituequesabes
 
 volumes:
