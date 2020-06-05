@@ -1,0 +1,45 @@
+version: '2'
+services:
+  pg-0:
+    image: 10.2.0.1:5000/postgresql-repmgr-mattermost
+    ports:
+      - "5433:5432"
+      - "9187:9187"
+    volumes:
+      - pg_0_data:/bitnami/postgresql
+    environment:
+      - POSTGRESQL_POSTGRES_PASSWORD=adminpassword
+      - POSTGRESQL_USERNAME=customuser
+      - POSTGRESQL_PASSWORD=custompassword
+      - POSTGRESQL_DATABASE=customdatabase
+      - REPMGR_PASSWORD=repmgrpassword
+      - REPMGR_PRIMARY_HOST=pg-0
+      - REPMGR_PRIMARY_PORT=5432
+      - REPMGR_PARTNER_NODES=pg-0,pg-1:5432
+      - REPMGR_NODE_NAME=pg-0
+      - REPMGR_NODE_NETWORK_NAME=pg-0
+      - REPMGR_PORT_NUMBER=5432
+  pg-1:
+    image: 10.2.0.1:5000/postgresql-repmgr-mattermost
+    ports:
+      - "5434:5432"
+      - "9188:9187"
+    volumes:
+      - pg_1_data:/bitnami/postgresql
+    environment:
+      - POSTGRESQL_POSTGRES_PASSWORD=adminpassword
+      - POSTGRESQL_USERNAME=customuser
+      - POSTGRESQL_PASSWORD=custompassword
+      - POSTGRESQL_DATABASE=customdatabase
+      - REPMGR_PASSWORD=repmgrpassword
+      - REPMGR_PRIMARY_HOST=pg-0
+      - REPMGR_PRIMARY_PORT=5432
+      - REPMGR_PARTNER_NODES=pg-0,pg-1:5432
+      - REPMGR_NODE_NAME=pg-1
+      - REPMGR_NODE_NETWORK_NAME=pg-1
+      - REPMGR_PORT_NUMBER=5432
+volumes:
+  pg_0_data:
+    driver: local
+  pg_1_data:
+    driver: local
