@@ -16,15 +16,13 @@ ln -s /etc/nginx/sites-available/mattermost$ssl /etc/nginx/conf.d/mattermost.con
 
 # Setup app host and port on configuration file
 sed -i "s/{%APP_HOST_1%}/${APP_HOST_1}/g" /etc/nginx/conf.d/mattermost.conf
-sed -i "s/{%APP_PORT_1%}/${APP_PORT_NUMBER_1}/g" /etc/nginx/conf.d/mattermost.conf
+sed -i "s/{%APP_PORT_1%}/${APP_PORT_1}/g" /etc/nginx/conf.d/mattermost.conf
 
 sed -i "s/{%APP_HOST_2%}/${APP_HOST_2}/g" /etc/nginx/conf.d/mattermost.conf
-sed -i "s/{%APP_PORT_2%}/${APP_PORT_NUMBER_2}/g" /etc/nginx/conf.d/mattermost.conf
+sed -i "s/{%APP_PORT_2%}/${APP_PORT_2}/g" /etc/nginx/conf.d/mattermost.conf
 
 sed -i "s/{%APP_HOST_3%}/${APP_HOST_3}/g" /etc/nginx/conf.d/mattermost.conf
-sed -i "s/{%APP_PORT_3%}/${APP_PORT_NUMBER_3}/g" /etc/nginx/conf.d/mattermost.conf
-
-./nginx-prometheus-exporter -nginx.scrape-uri http://localhost:80/stub_status &
+sed -i "s/{%APP_PORT_3%}/${APP_PORT_3}/g" /etc/nginx/conf.d/mattermost.conf
 
 # Run Nginx
 exec nginx -g 'daemon off;'

@@ -13,8 +13,6 @@ upstream app_upstream {
 server {
     listen 80;
 
-    stub_status on;
-
     # take care of static files (except the plugins)
     location /static/(?!plugins) {        
         # gzip
@@ -64,3 +62,20 @@ server {
         proxy_pass http://app_upstream;
     }  
 }
+
+server {
+  listen 9145;
+
+  #allow 192.168.0.0/16;
+  #deny all;
+
+  location /metrics {
+    content_by_lua_block {
+      metric_connections:set(ngx.var.connections_reading, {"reading"})
+      metric_connections:set(ngx.var.connections_waiting, {"waiting"})
+      metric_connections:set(ngx.var.connections_writing, {"writing"})
+      prometheus:collect()
+    }
+  }
+}
+

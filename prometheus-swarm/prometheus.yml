@@ -4,7 +4,7 @@ scrape_configs:
     - names:
       - 'tasks.web'
       type: 'A'
-      port: 9113
+      port: 9145
 
   - job_name: 'app'
     dns_sd_configs:
