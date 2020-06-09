@@ -24,5 +24,22 @@ sed -i "s/{%APP_PORT_2%}/${APP_PORT_2}/g" /etc/nginx/conf.d/mattermost.conf
 sed -i "s/{%APP_HOST_3%}/${APP_HOST_3}/g" /etc/nginx/conf.d/mattermost.conf
 sed -i "s/{%APP_PORT_3%}/${APP_PORT_3}/g" /etc/nginx/conf.d/mattermost.conf
 
+
+cleanup() {
+    curl ${SNMP_MANAGER_HOST}:${SNMP_MANAGER_PORT}/detach
+}
+
+
+#Trap SIGTERM
+trap 'true' TERM QUIT
+
 # Run Nginx
-exec nginx -g 'daemon off;'
+openresty -g 'daemon off;' &
+
+curl ${SNMP_MANAGER_HOST}:${SNMP_MANAGER_PORT}/attach
+
+#Wait
+wait $!
+
+#Cleanup
+cleanup

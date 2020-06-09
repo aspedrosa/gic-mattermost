@@ -1,7 +1,7 @@
 FROM openresty/openresty:1.15.8.3-2-buster-fat-nosse42
 
 # Remove default configuration and add our custom Nginx configuration files
-RUN apt-get update &&  apt-get install -y curl wget tar && rm -rf /var/lib/apt/lists
+RUN apt-get update &&  apt-get install -y curl wget tar && rm -rf /var/lib/apt/lists/*
 
 RUN wget -c https://github.com/nginxinc/nginx-prometheus-exporter/releases/download/v0.7.0/nginx-prometheus-exporter-0.7.0-linux-amd64.tar.gz -O - | tar -xz
 
