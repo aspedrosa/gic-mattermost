@@ -29,7 +29,6 @@ cleanup() {
     curl ${SNMP_MANAGER_HOST}:${SNMP_MANAGER_PORT}/detach
 }
 
-
 #Trap SIGTERM
 trap 'true' TERM QUIT
 

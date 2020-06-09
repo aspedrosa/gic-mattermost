@@ -88,4 +88,21 @@ if [ "$1" = 'mattermost' ]; then
   echo "Starting mattermost"
 fi
 
-exec "$@"
+
+cleanup() {
+    curl ${SNMP_MANAGER_HOST}:${SNMP_MANAGER_PORT}/detach
+}
+
+#Trap SIGTERM
+trap 'true' TERM QUIT
+
+# Run mattermost
+exec "$@" &
+
+curl ${SNMP_MANAGER_HOST}:${SNMP_MANAGER_PORT}/attach
+
+#Wait
+wait $!
+
+#Cleanup
+cleanup
