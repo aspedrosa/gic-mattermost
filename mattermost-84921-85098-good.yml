@@ -20,6 +20,8 @@ secrets:
 configs:
   mattermost_prometheus:
     external: true
+  mattermost_app:
+    external: true
     
 services:
   app-0:
@@ -45,13 +47,15 @@ services:
       # pass the edition to be used, default is enterprise
       # setting this env var will make the app use the team edition
       - edition=enterprise
-      # in case your config is not in default location
-      - MM_CONFIG=/mattermost/imported_files/config.json
       # SNMP related
       - SNMP_MANAGER_HOST=10.5.0.109
       - SNMP_MANAGER_PORT=8080
     secrets:
      - pgpool_postgres_password_secret
+    configs:
+     -
+      source: mattermost_app
+      target: /mattermost/config/config.json
 
   app-1:
     # use official mattermost prod-app image
@@ -76,13 +80,15 @@ services:
       # pass the edition to be used, default is enterprise
       # setting this env var will make the app use the team edition
       - edition=enterprise
-      # in case your config is not in default location
-      - MM_CONFIG=/mattermost/imported_files/config.json
       # SNMP related
       - SNMP_MANAGER_HOST=10.5.0.109
       - SNMP_MANAGER_PORT=8080
     secrets:
      - pgpool_postgres_password_secret
+    configs:
+     -
+      source: mattermost_app
+      target: /mattermost/config/config.json
 
   app-2:
     # use official mattermost prod-app image
@@ -107,13 +113,15 @@ services:
       # pass the edition to be used, default is enterprise
       # setting this env var will make the app use the team edition
       - edition=enterprise
-      # in case your config is not in default location
-      - MM_CONFIG=/mattermost/imported_files/config.json
       # SNMP related
       - SNMP_MANAGER_HOST=10.5.0.109
       - SNMP_MANAGER_PORT=8080
     secrets:
      - pgpool_postgres_password_secret
+    configs:
+     -
+      source: mattermost_app
+      target: /mattermost/config/config.json
 
   web:
     image: 10.2.0.1:5000/mattermost-84921-85098-web-balanced

@@ -13,20 +13,4 @@ scrape_configs:
       - 'tasks.app-1'
       - 'tasks.app-2'
       type: 'A'
-      port: 9113
-
-  #- job_name: 'pgpoll'
-  #  dns_sd_configs:
-  #  - names:
-  #    - 'tasks.pg-pool'
-  #    type: 'A'
-  #    port: TODO
-
-  #- job_name: 'pg'
-  #  dns_sd_configs:
-  #  - names:
-  #    - 'tasks.pg-0'
-  #    - 'tasks.pg-1'
-  #    - 'tasks.pg-2'
-  #    type: 'A'
-  #    port: TODO
+      port: 8067
