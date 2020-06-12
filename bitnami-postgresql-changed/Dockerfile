@@ -38,6 +38,7 @@ RUN  apt-get update && \
 EXPOSE 5432
 
 USER 1001
+COPY entrypoint.sh /opt/bitnami/scripts/postgresql-repmgr
 ENTRYPOINT [ "/opt/bitnami/scripts/postgresql-repmgr/entrypoint.sh" ]
 CMD [ "/opt/bitnami/scripts/postgresql-repmgr/run.sh" ]
 

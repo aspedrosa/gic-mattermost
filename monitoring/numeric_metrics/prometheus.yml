@@ -23,7 +23,16 @@ scrape_configs:
       'match[]':
         - '{job="web"}'
         - '{job="app"}'
-        - '{job="pg-poll"}'
-        - '{job="pg"}'
     static_configs:
       - targets: ["10.2.0.1:6330"]
+
+  - job_name: 'database'
+    static_configs:
+      - targets: ["postgres-exporter:9187"]
+
+  #- job_name: 'snmp'
+  #  file_sd_configs:
+  #  - files:
+  #    - 'snmp_targets.json'
+  #  metrics_path: /snmp
+  #  params:

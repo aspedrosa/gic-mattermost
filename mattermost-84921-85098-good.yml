@@ -5,7 +5,7 @@ networks:
   # network for App <-> DB transactions
   mm-in:
     driver: overlay
-    internal: true
+    internal: false
   # this network faces the outside world
   mm-out:
     driver: overlay
@@ -139,7 +139,7 @@ services:
       replicas: 3
 
   pg-0:
-    image: bitnami/postgresql-repmgr:11.7.0
+    image: 10.2.0.1:5000/postgresql-repmgr-mattermost
     networks:
       - mm-in
     volumes:
@@ -158,12 +158,15 @@ services:
       # Infos about this node
       - REPMGR_NODE_NAME=pg-0
       - REPMGR_NODE_NETWORK_NAME=pg-0
+      # Snmp related
+      - SNMP_MANAGER_HOST=10.5.0.109
+      - SNMP_MANAGER_PORT=8080
     secrets:
       - pgpool_postgres_password_secret
       - postgresql_password
 
   pg-1:
-    image:  bitnami/postgresql-repmgr:11.7.0
+    image:  10.2.0.1:5000/postgresql-repmgr-mattermost
     networks:
       - mm-in
     volumes:
@@ -182,12 +185,15 @@ services:
       # Infos about this node
       - REPMGR_NODE_NAME=pg-1
       - REPMGR_NODE_NETWORK_NAME=pg-1
+      # Snmp related
+      - SNMP_MANAGER_HOST=10.5.0.109
+      - SNMP_MANAGER_PORT=8080
     secrets:
       - pgpool_postgres_password_secret
       - postgresql_password
 
   pg-2:
-    image: bitnami/postgresql-repmgr:11.7.0
+    image: 10.2.0.1:5000/postgresql-repmgr-mattermost
     networks:
       - mm-in
     volumes:
@@ -206,6 +212,9 @@ services:
       # Infos about this node
       - REPMGR_NODE_NAME=pg-2
       - REPMGR_NODE_NETWORK_NAME=pg-2
+      # Snmp related
+      - SNMP_MANAGER_HOST=10.5.0.109
+      - SNMP_MANAGER_PORT=8080
     secrets:
       - pgpool_postgres_password_secret
       - postgresql_password

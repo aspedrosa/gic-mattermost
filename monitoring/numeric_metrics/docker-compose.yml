@@ -36,6 +36,11 @@ services:
     depends_on:
       - postgres
 
+  postgres-exporter:
+    image: wrouesnel/postgres_exporter
+    environment:
+      - DATA_SOURCE_NAME=postgresql://postgres:mm_admin_pasword@10.2.0.1:6320/postgres?sslmode=disable
+
   postgres:
     image: postgres:12.3
     volumes:
