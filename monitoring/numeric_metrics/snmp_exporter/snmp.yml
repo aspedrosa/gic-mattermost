@@ -1,0 +1,422 @@
+# WARNING: This file was auto-generated using snmp_exporter generator, manual changes will be lost.
+ip:
+  walk:
+  - 1.3.6.1.2.1.4.31.1.1.1
+  - 1.3.6.1.2.1.4.31.1.1.10
+  - 1.3.6.1.2.1.4.31.1.1.11
+  - 1.3.6.1.2.1.4.31.1.1.17
+  - 1.3.6.1.2.1.4.31.1.1.22
+  - 1.3.6.1.2.1.4.31.1.1.25
+  - 1.3.6.1.2.1.4.31.1.1.3
+  - 1.3.6.1.2.1.4.31.1.1.47
+  - 1.3.6.1.2.1.4.31.1.1.5
+  - 1.3.6.1.2.1.4.31.1.1.7
+  - 1.3.6.1.2.1.4.31.1.1.8
+  - 1.3.6.1.2.1.4.31.1.1.9
+  metrics:
+  - name: ipSystemStatsIPVersion
+    oid: 1.3.6.1.2.1.4.31.1.1.1
+    type: gauge
+    help: The IP version of this row. - 1.3.6.1.2.1.4.31.1.1.1
+    indexes:
+    - labelname: ipSystemStatsIPVersion
+      type: gauge
+    enum_values:
+      0: unknown
+      1: ipv4
+      2: ipv6
+  - name: ipSystemStatsInUnknownProtos
+    oid: 1.3.6.1.2.1.4.31.1.1.10
+    type: counter
+    help: The number of locally-addressed IP datagrams received successfully but discarded
+      because of an unknown or unsupported protocol - 1.3.6.1.2.1.4.31.1.1.10
+    indexes:
+    - labelname: ipSystemStatsIPVersion
+      type: gauge
+  - name: ipSystemStatsInTruncatedPkts
+    oid: 1.3.6.1.2.1.4.31.1.1.11
+    type: counter
+    help: The number of input IP datagrams discarded because the datagram frame didn't
+      carry enough data - 1.3.6.1.2.1.4.31.1.1.11
+    indexes:
+    - labelname: ipSystemStatsIPVersion
+      type: gauge
+  - name: ipSystemStatsInDiscards
+    oid: 1.3.6.1.2.1.4.31.1.1.17
+    type: counter
+    help: The number of input IP datagrams for which no problems were encountered
+      to prevent their continued processing, but were discarded (e.g., for lack of
+      buffer space) - 1.3.6.1.2.1.4.31.1.1.17
+    indexes:
+    - labelname: ipSystemStatsIPVersion
+      type: gauge
+  - name: ipSystemStatsOutNoRoutes
+    oid: 1.3.6.1.2.1.4.31.1.1.22
+    type: counter
+    help: The number of locally generated IP datagrams discarded because no route
+      could be found to transmit them to their destination - 1.3.6.1.2.1.4.31.1.1.22
+    indexes:
+    - labelname: ipSystemStatsIPVersion
+      type: gauge
+  - name: ipSystemStatsOutDiscards
+    oid: 1.3.6.1.2.1.4.31.1.1.25
+    type: counter
+    help: The number of output IP datagrams for which no problem was encountered to
+      prevent their transmission to their destination, but were discarded (e.g., for
+      lack of buffer space) - 1.3.6.1.2.1.4.31.1.1.25
+    indexes:
+    - labelname: ipSystemStatsIPVersion
+      type: gauge
+  - name: ipSystemStatsInReceives
+    oid: 1.3.6.1.2.1.4.31.1.1.3
+    type: counter
+    help: The total number of input IP datagrams received, including those received
+      in error - 1.3.6.1.2.1.4.31.1.1.3
+    indexes:
+    - labelname: ipSystemStatsIPVersion
+      type: gauge
+  - name: ipSystemStatsRefreshRate
+    oid: 1.3.6.1.2.1.4.31.1.1.47
+    type: gauge
+    help: The minimum reasonable polling interval for this entry - 1.3.6.1.2.1.4.31.1.1.47
+    indexes:
+    - labelname: ipSystemStatsIPVersion
+      type: gauge
+  - name: ipSystemStatsInOctets
+    oid: 1.3.6.1.2.1.4.31.1.1.5
+    type: counter
+    help: The total number of octets received in input IP datagrams, including those
+      received in error - 1.3.6.1.2.1.4.31.1.1.5
+    indexes:
+    - labelname: ipSystemStatsIPVersion
+      type: gauge
+  - name: ipSystemStatsInHdrErrors
+    oid: 1.3.6.1.2.1.4.31.1.1.7
+    type: counter
+    help: The number of input IP datagrams discarded due to errors in their IP headers,
+      including version number mismatch, other format errors, hop count exceeded,
+      errors discovered in processing their IP options, etc - 1.3.6.1.2.1.4.31.1.1.7
+    indexes:
+    - labelname: ipSystemStatsIPVersion
+      type: gauge
+  - name: ipSystemStatsInNoRoutes
+    oid: 1.3.6.1.2.1.4.31.1.1.8
+    type: counter
+    help: The number of input IP datagrams discarded because no route could be found
+      to transmit them to their destination - 1.3.6.1.2.1.4.31.1.1.8
+    indexes:
+    - labelname: ipSystemStatsIPVersion
+      type: gauge
+  - name: ipSystemStatsInAddrErrors
+    oid: 1.3.6.1.2.1.4.31.1.1.9
+    type: counter
+    help: The number of input IP datagrams discarded because the IP address in their
+      IP header's destination field was not a valid address to be received at this
+      entity - 1.3.6.1.2.1.4.31.1.1.9
+    indexes:
+    - labelname: ipSystemStatsIPVersion
+      type: gauge
+  auth:
+    community: gicgirs
+snmpv2_mib:
+  get:
+  - 1.3.6.1.2.1.1.3.0
+  - 1.3.6.1.2.1.1.7.0
+  - 1.3.6.1.2.1.1.8.0
+  metrics:
+  - name: sysUpTime
+    oid: 1.3.6.1.2.1.1.3
+    type: gauge
+    help: The time (in hundredths of a second) since the network management portion
+      of the system was last re-initialized. - 1.3.6.1.2.1.1.3
+  - name: sysServices
+    oid: 1.3.6.1.2.1.1.7
+    type: gauge
+    help: A value which indicates the set of services that this entity may potentially
+      offer - 1.3.6.1.2.1.1.7
+  - name: sysORLastChange
+    oid: 1.3.6.1.2.1.1.8
+    type: gauge
+    help: The value of sysUpTime at the time of the most recent change in state or
+      value of any instance of sysORID. - 1.3.6.1.2.1.1.8
+  auth:
+    community: gicgirs
+ucd_snmp_mib_cpu:
+  get:
+  - 1.3.6.1.4.1.2021.11.1.0
+  - 1.3.6.1.4.1.2021.11.2.0
+  - 1.3.6.1.4.1.2021.11.5.0
+  - 1.3.6.1.4.1.2021.11.50.0
+  - 1.3.6.1.4.1.2021.11.51.0
+  - 1.3.6.1.4.1.2021.11.52.0
+  - 1.3.6.1.4.1.2021.11.53.0
+  - 1.3.6.1.4.1.2021.11.54.0
+  - 1.3.6.1.4.1.2021.11.55.0
+  - 1.3.6.1.4.1.2021.11.56.0
+  - 1.3.6.1.4.1.2021.11.6.0
+  - 1.3.6.1.4.1.2021.11.67.0
+  - 1.3.6.1.4.1.2021.11.7.0
+  - 1.3.6.1.4.1.2021.11.8.0
+  metrics:
+  - name: ssIndex
+    oid: 1.3.6.1.4.1.2021.11.1
+    type: gauge
+    help: Bogus Index - 1.3.6.1.4.1.2021.11.1
+  - name: ssErrorName
+    oid: 1.3.6.1.4.1.2021.11.2
+    type: DisplayString
+    help: Bogus Name - 1.3.6.1.4.1.2021.11.2
+  - name: ssIOSent
+    oid: 1.3.6.1.4.1.2021.11.5
+    type: gauge
+    help: The average amount of data written to disk or other block device, calculated
+      over the last minute - 1.3.6.1.4.1.2021.11.5
+  - name: ssCpuRawUser
+    oid: 1.3.6.1.4.1.2021.11.50
+    type: counter
+    help: The number of 'ticks' (typically 1/100s) spent processing user-level code
+      - 1.3.6.1.4.1.2021.11.50
+  - name: ssCpuRawNice
+    oid: 1.3.6.1.4.1.2021.11.51
+    type: counter
+    help: The number of 'ticks' (typically 1/100s) spent processing reduced-priority
+      code - 1.3.6.1.4.1.2021.11.51
+  - name: ssCpuRawSystem
+    oid: 1.3.6.1.4.1.2021.11.52
+    type: counter
+    help: The number of 'ticks' (typically 1/100s) spent processing system-level code
+      - 1.3.6.1.4.1.2021.11.52
+  - name: ssCpuRawIdle
+    oid: 1.3.6.1.4.1.2021.11.53
+    type: counter
+    help: The number of 'ticks' (typically 1/100s) spent idle - 1.3.6.1.4.1.2021.11.53
+  - name: ssCpuRawWait
+    oid: 1.3.6.1.4.1.2021.11.54
+    type: counter
+    help: The number of 'ticks' (typically 1/100s) spent waiting for IO - 1.3.6.1.4.1.2021.11.54
+  - name: ssCpuRawKernel
+    oid: 1.3.6.1.4.1.2021.11.55
+    type: counter
+    help: The number of 'ticks' (typically 1/100s) spent processing kernel-level code
+      - 1.3.6.1.4.1.2021.11.55
+  - name: ssCpuRawInterrupt
+    oid: 1.3.6.1.4.1.2021.11.56
+    type: counter
+    help: The number of 'ticks' (typically 1/100s) spent processing hardware interrupts
+      - 1.3.6.1.4.1.2021.11.56
+  - name: ssIOReceive
+    oid: 1.3.6.1.4.1.2021.11.6
+    type: gauge
+    help: The average amount of data read from disk or other block device, calculated
+      over the last minute - 1.3.6.1.4.1.2021.11.6
+  - name: ssCpuNumCpus
+    oid: 1.3.6.1.4.1.2021.11.67
+    type: gauge
+    help: The number of processors, as counted by the agent - 1.3.6.1.4.1.2021.11.67
+  - name: ssSysInterrupts
+    oid: 1.3.6.1.4.1.2021.11.7
+    type: gauge
+    help: The average rate of interrupts processed (including the clock) calculated
+      over the last minute - 1.3.6.1.4.1.2021.11.7
+  - name: ssSysContext
+    oid: 1.3.6.1.4.1.2021.11.8
+    type: gauge
+    help: The average rate of context switches, calculated over the last minute -
+      1.3.6.1.4.1.2021.11.8
+  auth:
+    community: gicgirs
+ucd_snmp_mib_disk:
+  walk:
+  - 1.3.6.1.4.1.2021.9.1.1
+  - 1.3.6.1.4.1.2021.9.1.100
+  - 1.3.6.1.4.1.2021.9.1.101
+  - 1.3.6.1.4.1.2021.9.1.2
+  - 1.3.6.1.4.1.2021.9.1.3
+  - 1.3.6.1.4.1.2021.9.1.6
+  - 1.3.6.1.4.1.2021.9.1.7
+  - 1.3.6.1.4.1.2021.9.1.8
+  - 1.3.6.1.4.1.2021.9.1.9
+  metrics:
+  - name: dskIndex
+    oid: 1.3.6.1.4.1.2021.9.1.1
+    type: gauge
+    help: Integer reference number (row number) for the disk mib. - 1.3.6.1.4.1.2021.9.1.1
+    indexes:
+    - labelname: dskIndex
+      type: gauge
+  - name: dskErrorFlag
+    oid: 1.3.6.1.4.1.2021.9.1.100
+    type: gauge
+    help: Error flag signaling that the disk or partition is under the minimum required
+      space configured for it. - 1.3.6.1.4.1.2021.9.1.100
+    indexes:
+    - labelname: dskIndex
+      type: gauge
+    enum_values:
+      0: noError
+      1: error
+  - name: dskErrorMsg
+    oid: 1.3.6.1.4.1.2021.9.1.101
+    type: DisplayString
+    help: A text description providing a warning and the space left on the disk. -
+      1.3.6.1.4.1.2021.9.1.101
+    indexes:
+    - labelname: dskIndex
+      type: gauge
+  - name: dskPath
+    oid: 1.3.6.1.4.1.2021.9.1.2
+    type: DisplayString
+    help: Path where the disk is mounted. - 1.3.6.1.4.1.2021.9.1.2
+    indexes:
+    - labelname: dskIndex
+      type: gauge
+  - name: dskDevice
+    oid: 1.3.6.1.4.1.2021.9.1.3
+    type: DisplayString
+    help: Path of the device for the partition - 1.3.6.1.4.1.2021.9.1.3
+    indexes:
+    - labelname: dskIndex
+      type: gauge
+  - name: dskTotal
+    oid: 1.3.6.1.4.1.2021.9.1.6
+    type: gauge
+    help: Total size of the disk/partion (kBytes) - 1.3.6.1.4.1.2021.9.1.6
+    indexes:
+    - labelname: dskIndex
+      type: gauge
+  - name: dskAvail
+    oid: 1.3.6.1.4.1.2021.9.1.7
+    type: gauge
+    help: Available space on the disk - 1.3.6.1.4.1.2021.9.1.7
+    indexes:
+    - labelname: dskIndex
+      type: gauge
+  - name: dskUsed
+    oid: 1.3.6.1.4.1.2021.9.1.8
+    type: gauge
+    help: Used space on the disk - 1.3.6.1.4.1.2021.9.1.8
+    indexes:
+    - labelname: dskIndex
+      type: gauge
+  - name: dskPercent
+    oid: 1.3.6.1.4.1.2021.9.1.9
+    type: gauge
+    help: Percentage of space used on disk - 1.3.6.1.4.1.2021.9.1.9
+    indexes:
+    - labelname: dskIndex
+      type: gauge
+  auth:
+    community: gicgirs
+ucd_snmp_mib_memory:
+  get:
+  - 1.3.6.1.4.1.2021.4.1.0
+  - 1.3.6.1.4.1.2021.4.11.0
+  - 1.3.6.1.4.1.2021.4.12.0
+  - 1.3.6.1.4.1.2021.4.13.0
+  - 1.3.6.1.4.1.2021.4.14.0
+  - 1.3.6.1.4.1.2021.4.15.0
+  - 1.3.6.1.4.1.2021.4.18.0
+  - 1.3.6.1.4.1.2021.4.19.0
+  - 1.3.6.1.4.1.2021.4.2.0
+  - 1.3.6.1.4.1.2021.4.20.0
+  - 1.3.6.1.4.1.2021.4.21.0
+  - 1.3.6.1.4.1.2021.4.22.0
+  - 1.3.6.1.4.1.2021.4.23.0
+  - 1.3.6.1.4.1.2021.4.24.0
+  - 1.3.6.1.4.1.2021.4.25.0
+  - 1.3.6.1.4.1.2021.4.26.0
+  - 1.3.6.1.4.1.2021.4.3.0
+  - 1.3.6.1.4.1.2021.4.4.0
+  - 1.3.6.1.4.1.2021.4.5.0
+  - 1.3.6.1.4.1.2021.4.6.0
+  metrics:
+  - name: memIndex
+    oid: 1.3.6.1.4.1.2021.4.1
+    type: gauge
+    help: Bogus Index - 1.3.6.1.4.1.2021.4.1
+  - name: memTotalFree
+    oid: 1.3.6.1.4.1.2021.4.11
+    type: gauge
+    help: The total amount of memory free or available for use on this host - 1.3.6.1.4.1.2021.4.11
+  - name: memMinimumSwap
+    oid: 1.3.6.1.4.1.2021.4.12
+    type: gauge
+    help: The minimum amount of swap space expected to be kept free or available during
+      normal operation of this host - 1.3.6.1.4.1.2021.4.12
+  - name: memShared
+    oid: 1.3.6.1.4.1.2021.4.13
+    type: gauge
+    help: The total amount of real or virtual memory currently allocated for use as
+      shared memory - 1.3.6.1.4.1.2021.4.13
+  - name: memBuffer
+    oid: 1.3.6.1.4.1.2021.4.14
+    type: gauge
+    help: The total amount of real or virtual memory currently allocated for use as
+      memory buffers - 1.3.6.1.4.1.2021.4.14
+  - name: memCached
+    oid: 1.3.6.1.4.1.2021.4.15
+    type: gauge
+    help: The total amount of real or virtual memory currently allocated for use as
+      cached memory - 1.3.6.1.4.1.2021.4.15
+  - name: memTotalSwapX
+    oid: 1.3.6.1.4.1.2021.4.18
+    type: counter
+    help: The total amount of swap space configured for this host. - 1.3.6.1.4.1.2021.4.18
+  - name: memAvailSwapX
+    oid: 1.3.6.1.4.1.2021.4.19
+    type: counter
+    help: The amount of swap space currently unused or available. - 1.3.6.1.4.1.2021.4.19
+  - name: memErrorName
+    oid: 1.3.6.1.4.1.2021.4.2
+    type: DisplayString
+    help: Bogus Name - 1.3.6.1.4.1.2021.4.2
+  - name: memTotalRealX
+    oid: 1.3.6.1.4.1.2021.4.20
+    type: counter
+    help: The total amount of real/physical memory installed on this host. - 1.3.6.1.4.1.2021.4.20
+  - name: memAvailRealX
+    oid: 1.3.6.1.4.1.2021.4.21
+    type: counter
+    help: The amount of real/physical memory currently unused or available. - 1.3.6.1.4.1.2021.4.21
+  - name: memTotalFreeX
+    oid: 1.3.6.1.4.1.2021.4.22
+    type: counter
+    help: The total amount of memory free or available for use on this host - 1.3.6.1.4.1.2021.4.22
+  - name: memMinimumSwapX
+    oid: 1.3.6.1.4.1.2021.4.23
+    type: counter
+    help: The minimum amount of swap space expected to be kept free or available during
+      normal operation of this host - 1.3.6.1.4.1.2021.4.23
+  - name: memSharedX
+    oid: 1.3.6.1.4.1.2021.4.24
+    type: counter
+    help: The total amount of real or virtual memory currently allocated for use as
+      shared memory - 1.3.6.1.4.1.2021.4.24
+  - name: memBufferX
+    oid: 1.3.6.1.4.1.2021.4.25
+    type: counter
+    help: The total amount of real or virtual memory currently allocated for use as
+      memory buffers - 1.3.6.1.4.1.2021.4.25
+  - name: memCachedX
+    oid: 1.3.6.1.4.1.2021.4.26
+    type: counter
+    help: The total amount of real or virtual memory currently allocated for use as
+      cached memory - 1.3.6.1.4.1.2021.4.26
+  - name: memTotalSwap
+    oid: 1.3.6.1.4.1.2021.4.3
+    type: gauge
+    help: The total amount of swap space configured for this host. - 1.3.6.1.4.1.2021.4.3
+  - name: memAvailSwap
+    oid: 1.3.6.1.4.1.2021.4.4
+    type: gauge
+    help: The amount of swap space currently unused or available. - 1.3.6.1.4.1.2021.4.4
+  - name: memTotalReal
+    oid: 1.3.6.1.4.1.2021.4.5
+    type: gauge
+    help: The total amount of real/physical memory installed on this host. - 1.3.6.1.4.1.2021.4.5
+  - name: memAvailReal
+    oid: 1.3.6.1.4.1.2021.4.6
+    type: gauge
+    help: The amount of real/physical memory currently unused or available. - 1.3.6.1.4.1.2021.4.6
+  auth:
+    community: gicgirs
