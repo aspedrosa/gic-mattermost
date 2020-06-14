@@ -1,0 +1,22 @@
+groups:
+- name: snmp
+  rules:
+  - alert: Memory
+    expr: memTotalFree < 100000
+    for: 5m
+    annotations:
+      summary: Only 100 MB memory available at {{ $labels.instance }}
+
+  - alert: disk
+    expr: dskPercent{index="1"} > 95
+    for: 10m
+    annotations:
+      summary: Disk at {{ $labels.instance }} with 95% usage
+
+- name: latency
+  rules:
+
+  - alert: mattermost
+    expr: mattermost_api_time_bucket{le="2.5"} > 0
+    annotations:
+      summary: High request latency

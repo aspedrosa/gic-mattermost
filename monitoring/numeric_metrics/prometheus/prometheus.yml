@@ -1,0 +1,116 @@
+global:
+  scrape_interval:     60s # By default, scrape targets every 15 seconds.
+  evaluation_interval: 60s # By default, scrape targets every 15 seconds.
+  # scrape_timeout is set to the global default (10s).
+
+  # Attach these labels to any time series or alerts when communicating with
+  # external systems (federation, remote storage, Alertmanager).
+  external_labels:
+      monitor: 'mattermost-monitor'
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  - rules.yml
+
+alerting:
+ alertmanagers:
+   - static_configs:
+     - targets:
+       - alertmanager:9093
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  - job_name: 'swarm-prometheus'
+    honor_labels: true
+    metrics_path: '/federate'
+    params:
+      'match[]':
+        - '{job="web"}'
+        - '{job="app"}'
+    static_configs:
+      - targets: ["10.2.0.1:6330"]
+
+  - job_name: 'database'
+    static_configs:
+      - targets: ["postgres-exporter:9187"]
+
+  - job_name: 'snmp_ip'
+    file_sd_configs:
+    - files:
+      - 'snmp_targets.json'
+    metrics_path: /snmp
+    params:
+      module:
+        - ip
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: snmp-exporter:9116
+
+  - job_name: 'snmp_load'
+    file_sd_configs:
+    - files:
+      - 'snmp_targets.json'
+    metrics_path: /snmp
+    params:
+      module:
+        - snmpv2_mib
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: snmp-exporter:9116
+
+  - job_name: 'snmp_cpu'
+    file_sd_configs:
+    - files:
+      - 'snmp_targets.json'
+    metrics_path: /snmp
+    params:
+      module:
+        - ucd_snmp_mib_cpu
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: snmp-exporter:9116
+
+  - job_name: 'snmp_disk'
+    file_sd_configs:
+    - files:
+      - 'snmp_targets.json'
+    metrics_path: /snmp
+    params:
+      module:
+        - ucd_snmp_mib_disk
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: snmp-exporter:9116
+
+  - job_name: 'snmp_memory'
+    file_sd_configs:
+    - files:
+      - 'snmp_targets.json'
+    metrics_path: /snmp
+    params:
+      module:
+        - ucd_snmp_mib_memory
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: snmp-exporter:9116

@@ -7,22 +7,14 @@ services:
       - 9090:9090
     volumes:
       - prometheus-data:/prometheus
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/rules.yml:/etc/prometheus/rules.yml
       - ./snmp_targets.json:/etc/prometheus/snmp_targets.json
 
-  #alertmanager:
-  #  image: prom/alertmanager:v0.20.0
-  #  #volumes:
-  #  #  - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml
-
-  #unsee:
-  #  image: cloudflare/unsee:v0.9.2
-  #  environment:
-  #    - ALERTMANAGER_URIS=default:http://alertmanager:9093
-  #  ports:
-  #    - 8080:8080
-  #  depends_on:
-  #    - alertmanager
+  alertmanager:
+    image: prom/alertmanager:v0.20.0
+    volumes:
+      - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml
 
   grafana:
     image: grafana/grafana:7.0.1
